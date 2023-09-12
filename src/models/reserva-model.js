@@ -1,13 +1,12 @@
 import mongoose from "mongoose";
 
-const reservasSchema = new mongoose.Schema(
-    {
-        passageiro: {type: String, require: true},
-        viagem: {},
-        estadoReserva:{}
-    }
-)
+const reservaSchema = new mongoose.Schema({
+  passageiro: { type: String, required: true },
+  viagem: { type: mongoose.Schema.Types.ObjectId, ref: "Viagem", required: true },
+  assentosReservados: { type: Number, required: true },
+  status: { type: String, enum: ["Confirmada", "Pendente", "Cancelada"], default: "Pendente" },
+});
 
-const reservas = mongoose.model('forms', reservasSchema);
+const Reserva = mongoose.model("Reserva", reservaSchema);
 
-export default reservas;
+export default Reserva;
