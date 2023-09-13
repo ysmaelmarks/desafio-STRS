@@ -1,4 +1,6 @@
-export const autenticarMiddleware = (req, res, next) => {
+import { verificarToken } from "../auth/jwt.js";
+
+export const autenticarMiddlewareCliente = (req, res, next) => {
     const token = req.headers.authorization;
 
     if (!token) {
@@ -6,7 +8,8 @@ export const autenticarMiddleware = (req, res, next) => {
     }
 
     const decoded = verificarToken(token);
-    if (!decoded) {
+
+    if (!decoded || decoded.tipo !== "cliente") {
         return res.status(401).json({ message: "Acesso não autorizado. Token inválido ou expirado." });
     }
 
