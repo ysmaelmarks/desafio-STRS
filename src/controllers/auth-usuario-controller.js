@@ -1,11 +1,11 @@
 import cookie from "cookie";
 import { gerarToken } from "../auth/jwt.js";
-import { autenticarUsuario } from "../auth/auth-usuario.js";
+import { verificaUsuario } from "../auth/verifica-credenciais-usuario.js";
 
 export const authLogin = async (req, res) => {
     const { login, senha } = req.body;
     try {
-        const usuarioAutenticado = await autenticarUsuario(login, senha);
+        const usuarioAutenticado = await verificaUsuario(login, senha);
 
         if (!usuarioAutenticado) {
             return res.status(401).json({ message: "Credenciais inválidas" });

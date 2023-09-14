@@ -4,7 +4,7 @@ export const criarUsuario = async (req, res) => {
     try {
         const { nome, login, senha, tipo } = req.body;
 
-        // Verificar se o login já está em uso
+        // Verifica se o login já está em uso
         const loginEmUso = await Usuario.findOne({ login });
         if (loginEmUso) {
             return res.status(400).json({ message: "O login já está em uso." });

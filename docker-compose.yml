@@ -7,7 +7,7 @@ services:
       - ./:/strs
       - ./node_modules:/strs/node_modules
     environment:
-      - NODE_ENV=development
+      - sKEY=123abc
     depends_on:
       - db
     links:

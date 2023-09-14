@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+/*
 import bcrypt from "bcrypt";
-
+*/
 
 const usuarioSchema = new mongoose.Schema({
     nome:{type: String, required: true},
@@ -10,13 +11,14 @@ const usuarioSchema = new mongoose.Schema({
 })
 
 //método de verificação de senha
-usuarioSchema.methods.verificarSenha = async function (senha) {
+/*usuarioSchema.methods.verificarSenha = async function (senha) {
     try {
         return await bcrypt.compare(senha, this.senha);
     } catch (error) {
         throw error;
     }
 };
+*/
 
 const Usuario = mongoose.model("Usuario", usuarioSchema);
 
