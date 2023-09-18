@@ -1,6 +1,11 @@
 import { verificarToken } from "../auth/jwt.js";
 
 export const autenticarMiddlewareCliente = (req, res, next) => {
+    // Verifica se 'authorization' está presente em 'req.headers'
+    if (!req.headers.authorization) {
+        return res.status(401).json({ message: "Acesso não autorizado. Token não fornecido." });
+    }
+
     const token = req.headers.authorization.split(' ')[1];
 
     if (!token) {
@@ -17,9 +22,14 @@ export const autenticarMiddlewareCliente = (req, res, next) => {
     next();
 };
 
+
 //Uma lógica diferente deve ser utilizada aqui para separar as autenticações
 export const autenticarMiddlewareGerente = (req, res, next) => {
-    const token = req.headers.authorization;
+    if (!req.headers.authorization) {
+        return res.status(401).json({ message: "Acesso não autorizado. Token não fornecido." });
+    }
+
+    const token = req.headers.authorization.split(' ')[1];
 
     if (!token) {
         return res.status(401).json({ message: "Acesso não autorizado. Token não fornecido." });

@@ -38,7 +38,6 @@ export const criarReserva = async (req, res) => {
         });
 
         viagem.assentosDisponiveis -= assentosReservados;
-
         await reserva.save();
         await viagem.save();
 
@@ -60,7 +59,7 @@ export const criarReserva = async (req, res) => {
             },
         });
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({ message: "Erro interno do servidor" });
     }
 };
@@ -90,7 +89,7 @@ export const buscarReservaCliente = async (req, res) => {
             reservas,
         });
     } catch (error) {
-        console.error(error);
+        console.log(error);
         return res.status(500).json({ message: "Erro interno do servidor" });
     }
 };
@@ -122,7 +121,7 @@ export const trocarReserva = async (req, res) => {
 
         return res.status(200).json({ message: "Reserva alterada com sucesso" });
     } catch (error) {
-        console.error(error);
+        console.log(error);
         return res.status(500).json({ message: "Erro interno do servidor" });
     }
 }
@@ -158,9 +157,9 @@ export const cancelarReserva = async (req, res) => {
         viagem.assentosDisponiveis += reservaExistente.assentosReservados;
         await viagem.save();
 
-        return res.status(200).json({ message: `Reserva cancelada com sucesso. Reembolso de $∑{reembolso} Estalecas` });
+        return res.status(200).json({ message: `Reserva cancelada com sucesso. Reembolso de $∑${reembolso} Estalecas` });
     } catch (error) {
-        console.error(error);
+        console.log(error);
         return res.status(500).json({ message: "Erro interno do servidor" });
     }
 };

@@ -8,7 +8,6 @@ export const gerarToken = (dados) => {
 export const verificarToken = (token) => {
   try {
     const decoded = jwt.verify(token, secretKey);
-    console.log("aqui", decoded)
     return decoded;
   } catch (error) {
     throw new Error("Token inválido ou expirado");

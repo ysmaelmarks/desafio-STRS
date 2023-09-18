@@ -23,7 +23,6 @@ export const authLogin = async (req, res) => {
         res.setHeader("Set-Cookie", cookie.serialize("token", token, cookieOptions));
         res.status(200).json({ message: "Login bem-sucedido" });
     } catch (error) {
-        console.error(error);
         res.status(500).json({ message: "Erro ao autenticar o usuário" });
     }
 };

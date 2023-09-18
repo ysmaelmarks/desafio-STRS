@@ -12,10 +12,10 @@ export const criarViagem = async (req, res) => {
             preco,
             assentosDisponiveis,
         });
-        await viagem.save();
+        viagem.save();
         res.status(201).json({ message: "Viagem criada com sucesso", viagem });
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({ message: "Erro ao criar uma nova viagem" });
     }
 };
@@ -47,10 +47,10 @@ export const remarcarViagem = async (req, res) => {
             viagemExistente.assentosDisponiveis = assentosDisponiveis;
         }
 
-        await viagemExistente.save();
+        viagemExistente.save();
         res.status(200).json({ message: "Viagem remarcada com sucesso", viagem: viagemExistente });
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({ message: "Erro ao remarcar a viagem" });
     }
 };
@@ -66,14 +66,14 @@ export const cancelarViagem = async (req, res) => {
         }
         // Atualiza o destino da viagem para "cancelado"
         viagemExistente.destino = "cancelado";
-        await viagemExistente.save();
+        viagemExistente.save();
 
         // Encontra todas as reservas relacionadas a esta viagem e atualiza o status para "cancelado"
         await Reserva.updateMany({ viagem: viagemId }, { status: "Cancelada" });
 
         res.status(200).json({ message: "Viagem cancelada com sucesso", viagem: viagemExistente });
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(500).json({ message: "Erro ao cancelar a viagem" });
     }
 };

@@ -1,8 +1,7 @@
 import Usuario from "../models/usuarios-model.js";
 
-const verificaUsuario = async (login, senha) => {
+export const verificaUsuario = async (login) => {
     try {
-        // Procura um usuário com o login fornecido
         const usuario = await Usuario.findOne({ login });
         if (!usuario) {
             return null;
@@ -12,12 +11,13 @@ const verificaUsuario = async (login, senha) => {
         if (!senhaCorreta) {
             return null;
         }
+
+        Aprimorar essa parte para receber valores reais do BCRYPT
+
         */
         return usuario;
     } catch (error) {
-        console.error(error);
-        return;
+        console.log(error);
+        return null;
     }
 };
-
-export { verificaUsuario };
