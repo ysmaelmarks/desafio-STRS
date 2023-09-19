@@ -1,0 +1,435 @@
+openapi: 3.1.0
+info:
+  title: API Sistema de Reserva de Viagens Espaciais
+  description: Uma API para lidar com autenticação, gerenciamento e reserva de passagens.
+  version: 1.0.0
+
+paths:
+  /login:
+    post:
+      summary: Autenticar Usuário
+      description: Realiza a autenticação do usuário.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                senha:
+                  type: string
+              required:
+                - login
+                - senha
+      responses:
+        '200':
+          description: Login bem-sucedido
+          content:
+            application/json:
+              example:
+                message: Login bem-sucedido
+        '401':
+          description: Credenciais inválidas
+          content:
+            application/json:
+              example:
+                message: Credenciais inválidas
+        '500':
+          description: Erro ao autenticar o usuário
+          content:
+            application/json:
+              example:
+                message: Erro ao autenticar o usuário
+
+  /novoUsuario:
+    post:
+      summary: Criar Usuário
+      description: Cria um novo usuário.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                login:
+                  type: string
+                senha:
+                  type: string
+                tipo:
+                  type: string
+              required:
+                - nome
+                - login
+                - senha
+                - tipo
+      responses:
+        '201':
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              example:
+                message: Usuário criado com sucesso
+        '400':
+          description: O login já está em uso
+          content:
+            application/json:
+              example:
+                message: O login já está em uso
+        '500':
+          description: Erro ao criar um usuário
+          content:
+            application/json:
+              example:
+                message: Erro ao criar um usuário
+
+  /viagem/{viagemId}/reserva:
+    post:
+      summary: Criar Reserva
+      description: Cria uma nova reserva em uma viagem específica.
+      parameters:
+        - in: path
+          name: viagemId
+          required: true
+          schema:
+            type: string
+          description: ID da viagem em que a reserva será criada.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passageiro:
+                  type: string
+                assentosReservados:
+                  type: integer
+              required:
+                - passageiro
+                - assentosReservados
+      responses:
+        '201':
+          description: Reserva criada com sucesso
+          content:
+            application/json:
+              example:
+                message: Reserva criada com sucesso
+                reserva:
+                  _id: "ID_DA_RESERVA"
+                  passageiro: NOME_DO_PASSAGEIRO
+                  viagem:
+                    destino: DESTINO_DA_VIAGEM
+                    data: DATA_DA_VIAGEM
+                    partida: HORA_DE_PARTIDA
+                    chegada: HORA_DE_CHEGADA
+                    assentos_Reservados: QUANTIDADE_DE_ASSENTOS
+        '400':
+          description: Assentos insuficientes disponíveis ou limite de assentos excedido
+          content:
+            application/json:
+              example:
+                message: Assentos insuficientes disponíveis ou limite de assentos excedido
+        '404':
+          description: Viagem não encontrada
+          content:
+            application/json:
+              example:
+                message: Viagem não encontrada
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              example:
+                message: Erro interno do servidor
+
+  /reservas/cliente/{login}:
+    get:
+      summary: Buscar Reservas do Cliente
+      description: Busca as reservas de um cliente com base no login.
+      parameters:
+        - in: path
+          name: login
+          required: true
+          schema:
+            type: string
+          description: Login do cliente cujas reservas serão buscadas.
+      responses:
+        '200':
+          description: Reservas do cliente encontradas
+          content:
+            application/json:
+              example:
+                cliente:
+                  nome: NOME_DO_CLIENTE
+                  login: LOGIN_DO_CLIENTE
+                reservas:
+                  - _id: "ID_DA_RESERVA_1"
+                    passageiro: NOME_DO_PASSAGEIRO_1
+                    viagem:
+                      destino: DESTINO_DA_VIAGEM_1
+                      data: DATA_DA_VIAGEM_1
+                      partida: HORA_DE_PARTIDA_1
+                      chegada: HORA_DE_CHEGADA_1
+                      assentos_Reservados: QUANTIDADE_DE_ASSENTOS_1
+                    status: STATUS_DA_RESERVA_1
+                  - _id: "ID_DA_RESERVA_2"
+                    passageiro: NOME_DO_PASSAGEIRO_2
+                    viagem:
+                      destino: DESTINO_DA_VIAGEM_2
+                      data: DATA_DA_VIAGEM_2
+                      partida: HORA_DE_PARTIDA_2
+                      chegada: HORA_DE_CHEGADA_2
+                      assentos_Reservados: QUANTIDADE_DE_ASSENTOS_2
+                    status: STATUS_DA_RESERVA_2
+        '404':
+          description: Cliente não encontrado
+          content:
+            application/json:
+              example:
+                message: Cliente não encontrado
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              example:
+                message: Erro interno do servidor
+
+  /reservas/{reservaId}/trocar:
+    patch:
+      summary: Trocar Reserva
+      description: Troca os detalhes de uma reserva existente.
+      parameters:
+        - in: path
+          name: reservaId
+          required: true
+          schema:
+            type: string
+          description: ID da reserva a ser alterada.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                novoDestino:
+                  type: string
+                novaData:
+                  type: string
+              required:
+                - novoDestino
+                - novaData
+      responses:
+        '200':
+          description: Reserva alterada com sucesso
+          content:
+            application/json:
+              example:
+                message: Reserva alterada com sucesso
+        '400':
+          description: Não há viagens disponíveis com os novos detalhes
+          content:
+            application/json:
+              example:
+                message: Não há viagens disponíveis com os novos detalhes
+        '404':
+          description: Reserva não encontrada
+          content:
+            application/json:
+              example:
+                message: Reserva não encontrada
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              example:
+                message: Erro interno do servidor
+
+  /reservas/{reservaId}/cancelar:
+    patch:
+      summary: Cancelar Reserva
+      description: Cancela uma reserva existente.
+      parameters:
+        - in: path
+          name: reservaId
+          required: true
+          schema:
+            type: string
+          description: ID da reserva a ser cancelada.
+      responses:
+        '200':
+          description: Reserva cancelada com sucesso
+          content:
+            application/json:
+              example:
+                message: Reserva cancelada com sucesso. Reembolso de $∑VALOR_DO_REEMBOLSO Estalecas
+        '400':
+          description: Esta reserva já foi cancelada anteriormente
+          content:
+            application/json:
+              example:
+                message: Esta reserva já foi cancelada anteriormente
+        '404':
+          description: Reserva não encontrada
+          content:
+            application/json:
+              example:
+                message: Reserva não encontrada
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              example:
+                message: Erro interno do servidor
+
+  /viagens:
+    post:
+      summary: Criar Viagem
+      description: Cria uma nova viagem.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                destino:
+                  type: string
+                dataPartida:
+                  type: string
+                dataChegada:
+                  type: string
+                preco:
+                  type: number
+                assentosDisponiveis:
+                  type: integer
+              required:
+                - destino
+                - dataPartida
+                - dataChegada
+                - preco
+                - assentosDisponiveis
+      responses:
+        '201':
+          description: Viagem criada com sucesso
+          content:
+            application/json:
+              example:
+                message: Viagem criada com sucesso
+                viagem:
+                  _id: "ID_DA_VIAGEM"
+                  destino: DESTINO_DA_VIAGEM
+                  dataPartida: DATA_DE_PARTIDA
+                  dataChegada: DATA_DE_CHEGADA
+                  preco: PRECO_DA_VIAGEM
+                  assentosDisponiveis: QUANTIDADE_DE_ASSENTOS
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              example:
+                message: Erro interno do servidor
+
+  /viagens/{viagemId}:
+    patch:
+      summary: Remarcar Viagem
+      description: Remarca uma viagem existente com base no ID da viagem.
+      parameters:
+        - in: path
+          name: viagemId
+          required: true
+          schema:
+            type: string
+          description: ID da viagem a ser remarcada.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                destino:
+                  type: string
+                dataPartida:
+                  type: string
+                dataChegada:
+                  type: string
+                preco:
+                  type: number
+                assentosDisponiveis:
+                  type: integer
+              required:
+                - destino
+                - dataPartida
+                - dataChegada
+                - preco
+                - assentosDisponiveis
+      responses:
+        '200':
+          description: Viagem remarcada com sucesso
+          content:
+            application/json:
+              example:
+                message: Viagem remarcada com sucesso
+                viagem:
+                  _id: "ID_DA_VIAGEM"
+                  destino: DESTINO_DA_VIAGEM_REMARCADO
+                  dataPartida: DATA_DE_PARTIDA_REMARCADA
+                  dataChegada: DATA_DE_CHEGADA_REMARCADA
+                  preco: PRECO_DA_VIAGEM_REMARCADA
+                  assentosDisponiveis: QUANTIDADE_DE_ASSENTOS_REMARCADOS
+        '404':
+          description: Viagem não encontrada
+          content:
+            application/json:
+              example:
+                message: Viagem não encontrada
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              example:
+                message: Erro interno do servidor
+
+  /viagens/{viagemId}:
+    delete:
+      summary: Cancelar Viagem
+      description: Cancela uma viagem existente com base no ID da viagem.
+      parameters:
+        - in: path
+          name: viagemId
+          required: true
+          schema:
+            type: string
+          description: ID da viagem a ser cancelada.
+      responses:
+        '200':
+          description: Viagem cancelada com sucesso
+          content:
+            application/json:
+              example:
+                message: Viagem cancelada com sucesso
+                viagem:
+                  _id: "ID_DA_VIAGEM"
+                  destino: "cancelado"
+                  dataPartida: DATA_DE_PARTIDA
+                  dataChegada: DATA_DE_CHEGADA
+                  preco: PRECO_DA_VIAGEM
+                  assentosDisponiveis: QUANTIDADE_DE_ASSENTOS
+        '404':
+          description: Viagem não encontrada
+          content:
+            application/json:
+              example:
+                message: Viagem não encontrada
+        '500':
+          description: Erro interno do servidor
+          content:
+            application/json:
+              example:
+                message: Erro interno do servidor
