@@ -9,7 +9,7 @@
     "yamljs": "^0.3.0"
   },
   "scripts": {
-    "start": "node --env-file dev.env server.js",
+    "start": "node server.js",
     "test": "jest"
   },
   "name": "sistema-de-viagens-espaciais",

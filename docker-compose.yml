@@ -1,11 +1,11 @@
 version: '1.0'
 services:
   server:
-    container_name: STRS
+    container_name: desafio-STRS
     build: '.'
     volumes:
-      - ./:/strs
-      - ./node_modules:/strs/node_modules
+      - ./:/desafio-STRS
+      - ./node_modules:/desafio-STRS/node_modules
     environment:
       - sKEY=123abc
     depends_on:
