@@ -53,8 +53,6 @@ Bugs :
     Descrição:
         viagem-controller.test.js - Está sendo retornado um erro de importação junto ao JEST
     Reprodução:
-        ```sh
         $ npx jest
-        ```
     Status:
         Procurando solução.
