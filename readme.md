@@ -60,3 +60,5 @@ Bugs :
         o problema está relacionado com as funções do mongoose, onde como
         há a necessidade de várias modificações nas Viagens (updateMany()),
         o mongoose retorna um timeout, pois trata-se de mocks.
+        Possível solução: utilizar um BD real ao invés de mocks para esse
+        teste específico.
