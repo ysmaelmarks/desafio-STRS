@@ -56,3 +56,7 @@ Bugs :
         $ npx jest
     Status:
         Procurando solução.
+        Até então sem sucesso, acredito que, de acordo com algumas pesquisas,
+        o problema está relacionado com as funções do mongoose, onde como
+        há a necessidade de várias modificações nas Viagens (updateMany()),
+        o mongoose retorna um timeout, pois trata-se de mocks.
